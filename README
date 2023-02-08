@@ -1,0 +1,118 @@
+#include <Joystick.h>
+#include <Servo.h>
+
+Joystick_ Joystick;
+Servo trim;
+
+// put the max   and min values from the analogRead in these arrays
+// these are translated to   a range of 0 - 1023
+int axisLimits0[] = {0, 1023};
+int axisLimits1[] = {0, 1023};
+int axisLimits2[] = {0, 1023};
+int axisLimits3[] = {0, 1023};
+int axisLimits6[] = {0, 1023};
+
+
+// turn axes   on or off by setting these variables
+bool a0Used = true;
+bool a1Used = true;
+bool a2Used = true;
+bool a3Used = true;
+bool a6Used = true;
+
+//   setting mode prints the pin value and translated value to the serial monitor
+//   int setting = -1; // no printing to the serial monitor
+// int setting = 2; //   values 0 - 5, print the pin values to the serial monitor
+int setting = 0;
+
+int potpin = 4;  // analog pin used to connect the potentiometer
+int val;    // variable to read the value from the analog pin
+
+void setup() {
+  if(a0Used) pinMode(A0, INPUT);
+  if(a1Used) pinMode(A1, INPUT);
+  if(a2Used) pinMode(A2, INPUT);
+  if(a3Used) pinMode(A3, INPUT);
+  if(a6Used) pinMode(A6, INPUT);
+  
+  Joystick.begin();
+   if(setting >= 0) Serial.begin(9600);
+
+  trim.attach(8); 
+}
+
+void loop() {
+  val = analogRead(potpin);            // reads the value of the potentiometer (value between 0 and 1023)
+  val = map(val, 1023, 0, 0, 35);     // scale it to use it with the servo (value between 0 and 180)
+  trim.write(val);                  // sets the servo position according to the scaled value
+  delay(5);                           // waits for the servo to get there
+
+  int value   = 0;
+  int pos = 0;
+
+  if(a0Used){
+    value = analogRead(A0);
+    pos   = translateValue(value, axisLimits0[0], axisLimits0[1]);
+    Joystick.setThrottle(pos);
+     if(setting == 0) settingPrint(value, pos);
+  }
+  
+  if(a1Used){
+     value = analogRead(A1);
+    pos = translateValue(value, axisLimits1[0], axisLimits1[1]);
+     Joystick.setRxAxis(pos);
+    if(setting == 1) settingPrint(value, pos);
+   }
+  
+  if(a2Used){
+    value = analogRead(A2);
+    pos = translateValue(value,   axisLimits2[0], axisLimits2[1]);
+    Joystick.setRyAxis(pos);
+    if(setting == 2) settingPrint(value, pos);
+  }
+  
+  if(a3Used){
+    value = analogRead(A3);
+     pos = translateValue(value, axisLimits3[0], axisLimits3[1]);
+    Joystick.setRzAxis(pos);
+     if(setting == 3) settingPrint(value, pos);
+  }
+
+  if(a6Used){
+    value = analogRead(A6);
+     pos = translateValue(value, axisLimits6[0], axisLimits6[1]);
+    Joystick.setZAxis(pos);
+     if(setting == 6) settingPrint(value, pos);
+  }
+  
+   delay(5);
+}
+
+int translateValue(int   v, int f1, int f2){
+  // translates values to a 0 - 1023 range
+  int result   = 0;
+  int start = 0;
+  float range = 0;
+  
+  if(f1 < f2){
+    start   = f1;
+    range = f2 - f1;
+  }
+  else{
+    start = f2;
+    range   = f1 - f2;
+  }
+  
+  result = (v - start) * (1023 / range);
+
+  if(result   < 0) result = 0;
+  if(result > 1023) result = 1023;
+  
+  return result;
+}
+
+void settingPrint(int value, int pos){
+  Serial.print(value); 
+  Serial.print("   "); 
+  Serial.println(pos);
+}
