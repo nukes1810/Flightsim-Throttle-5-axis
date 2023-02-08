@@ -17,6 +17,7 @@ Parts List
 Wiring
 - the two fixed ends of the potentiometer goes to negative and positive of 5v and the variable pin will be connected to the analog pins, along with the servo + - and signal to analog pin
    - on a generic board they are pin A0-A3 4, 6, 8, 9, & 10 (ones marked in green on the picture below)![71iUKrFHB6L](https://user-images.githubusercontent.com/84696624/217468709-904b629a-af88-478e-9247-0284d385aec6.jpg)
+- 10uf cap is attached the power positive to positive and negative to negative 
 
 Code
 - if not using the same pins as i did please refewr to a pinpot of the board and change the numbers according instead of usinmg A0 using A9
@@ -60,5 +61,7 @@ to
     trim.write(val);                  // sets the servo position according to the scaled value
     delay(5);                           // waits for the servo to get there
  ```
-
+3D Files 
+- the trim wheel is not my creation and was download from thingiverse and was modified with screw holes to attach tot he main box i have created https://www.thingiverse.com/thing:4290141
+- Throttle box i have designed can also be found in thingiverse tho it isnt the most prettiest but functional nevertheless, especially if you are using VR
  
