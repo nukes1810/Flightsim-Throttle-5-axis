@@ -52,23 +52,23 @@ void loop() {
 
   if(a0Used){
     value = analogRead(A0);
-    pos   = translateValue(value, axisLimits0[0], axisLimits0[1]);
+     pos   = translateValue(value, axisLimits0[0], axisLimits0[1]);
     Joystick.setThrottle(pos);
      if(setting == 0) settingPrint(value, pos);
   }
   
   if(a1Used){
-     value = analogRead(A1);
-    pos = translateValue(value, axisLimits1[0], axisLimits1[1]);
-     Joystick.setRxAxis(pos);
-    if(setting == 1) settingPrint(value, pos);
+    value = analogRead(A1);
+     pos = translateValue(value, axisLimits1[0], axisLimits1[1]);
+    Joystick.setRxAxis(pos);
+     if(setting == 1) settingPrint(value, pos);
    }
   
   if(a2Used){
     value = analogRead(A2);
-    pos = translateValue(value,   axisLimits2[0], axisLimits2[1]);
+     pos = translateValue(value,   axisLimits2[0], axisLimits2[1]);
     Joystick.setRyAxis(pos);
-    if(setting == 2) settingPrint(value, pos);
+     if(setting == 2) settingPrint(value, pos);
   }
   
   if(a3Used){
